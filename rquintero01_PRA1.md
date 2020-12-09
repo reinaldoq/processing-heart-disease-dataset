@@ -18,9 +18,7 @@ output:
     toc: yes
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+
 ******
 # Introducción
 ******
@@ -161,17 +159,83 @@ El conjunto de datos Utilizado cuenta con las siguientes variables:
 
 
 Cargamos los datos
-```{r}
+
+```r
 library(tidyverse) 
+```
+
+```
+## Warning: package 'tidyverse' was built under R version 4.0.2
+```
+
+```
+## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──
+```
+
+```
+## ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
+## ✓ tibble  3.0.4     ✓ dplyr   1.0.2
+## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
+## ✓ readr   1.4.0     ✓ forcats 0.5.0
+```
+
+```
+## Warning: package 'ggplot2' was built under R version 4.0.2
+```
+
+```
+## Warning: package 'tibble' was built under R version 4.0.2
+```
+
+```
+## Warning: package 'tidyr' was built under R version 4.0.2
+```
+
+```
+## Warning: package 'readr' was built under R version 4.0.2
+```
+
+```
+## Warning: package 'purrr' was built under R version 4.0.2
+```
+
+```
+## Warning: package 'dplyr' was built under R version 4.0.2
+```
+
+```
+## Warning: package 'stringr' was built under R version 4.0.2
+```
+
+```
+## Warning: package 'forcats' was built under R version 4.0.2
+```
+
+```
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+```
+
+```r
 library(ggplot2)
 library(GGally)
+```
 
+```
+## Warning: package 'GGally' was built under R version 4.0.2
+```
 
+```
+## Registered S3 method overwritten by 'GGally':
+##   method from   
+##   +.gg   ggplot2
+```
 
+```r
 df <- read.csv("processed.cleveland.data", sep = ",", col.names = c("age", "sex", "cp", "trestbps", "chol","fbs", "restecg", "thalach","exang","oldpeak", "slope", "ca", "thal", "num"), na.strings = "?")
 
 # El dataset tiene datos NA que vienen con simbolo de interrogacion por eso indicamos que "?" corresponde con NA.
-
 ```
 
 Caracterizacion del dataset
@@ -179,42 +243,135 @@ Caracterizacion del dataset
 En el dataset contmos con 14 variables en total de las cuales 6 son continuos y 8 categoricas. Igualmente tenemos una muestra de 302 observaciones validas.
 
 
-```{r}
+
+```r
 glimpse(df)
+```
+
+```
+## Rows: 302
+## Columns: 14
+## $ age      <dbl> 67, 67, 37, 41, 56, 62, 57, 63, 53, 57, 56, 56, 44, 52, 57, …
+## $ sex      <dbl> 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, …
+## $ cp       <dbl> 4, 4, 3, 2, 2, 4, 4, 4, 4, 4, 2, 3, 2, 3, 3, 2, 4, 3, 2, 1, …
+## $ trestbps <dbl> 160, 120, 130, 130, 120, 140, 120, 130, 140, 140, 140, 130, …
+## $ chol     <dbl> 286, 229, 250, 204, 236, 268, 354, 254, 203, 192, 294, 256, …
+## $ fbs      <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, …
+## $ restecg  <dbl> 2, 2, 0, 2, 0, 2, 0, 2, 2, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 2, …
+## $ thalach  <dbl> 108, 129, 187, 172, 178, 160, 163, 147, 155, 148, 153, 142, …
+## $ exang    <dbl> 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, …
+## $ oldpeak  <dbl> 1.5, 2.6, 3.5, 1.4, 0.8, 3.6, 0.6, 1.4, 3.1, 0.4, 1.3, 0.6, …
+## $ slope    <dbl> 2, 2, 3, 1, 1, 3, 1, 2, 3, 2, 2, 2, 1, 1, 1, 3, 1, 1, 1, 2, …
+## $ ca       <dbl> 3, 2, 0, 0, 0, 2, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ thal     <dbl> 3, 7, 3, 3, 3, 3, 3, 7, 7, 6, 3, 6, 7, 7, 3, 7, 3, 3, 3, 3, …
+## $ num      <int> 2, 1, 0, 0, 0, 3, 0, 2, 1, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 0, …
 ```
 
 Podemos comprobar que tenemos variables con valores NA, especificamente en ca y thal, debemos ocuparnos de esos valores.
 
-```{r}
+
+```r
 summary(df)
+```
+
+```
+##       age             sex               cp           trestbps    
+##  Min.   :29.00   Min.   :0.0000   Min.   :1.000   Min.   : 94.0  
+##  1st Qu.:48.00   1st Qu.:0.0000   1st Qu.:3.000   1st Qu.:120.0  
+##  Median :55.50   Median :1.0000   Median :3.000   Median :130.0  
+##  Mean   :54.41   Mean   :0.6788   Mean   :3.166   Mean   :131.6  
+##  3rd Qu.:61.00   3rd Qu.:1.0000   3rd Qu.:4.000   3rd Qu.:140.0  
+##  Max.   :77.00   Max.   :1.0000   Max.   :4.000   Max.   :200.0  
+##                                                                  
+##       chol            fbs            restecg          thalach     
+##  Min.   :126.0   Min.   :0.0000   Min.   :0.0000   Min.   : 71.0  
+##  1st Qu.:211.0   1st Qu.:0.0000   1st Qu.:0.0000   1st Qu.:133.2  
+##  Median :241.5   Median :0.0000   Median :0.5000   Median :153.0  
+##  Mean   :246.7   Mean   :0.1457   Mean   :0.9868   Mean   :149.6  
+##  3rd Qu.:275.0   3rd Qu.:0.0000   3rd Qu.:2.0000   3rd Qu.:166.0  
+##  Max.   :564.0   Max.   :1.0000   Max.   :2.0000   Max.   :202.0  
+##                                                                   
+##      exang           oldpeak          slope             ca        
+##  Min.   :0.0000   Min.   :0.000   Min.   :1.000   Min.   :0.0000  
+##  1st Qu.:0.0000   1st Qu.:0.000   1st Qu.:1.000   1st Qu.:0.0000  
+##  Median :0.0000   Median :0.800   Median :2.000   Median :0.0000  
+##  Mean   :0.3278   Mean   :1.035   Mean   :1.596   Mean   :0.6745  
+##  3rd Qu.:1.0000   3rd Qu.:1.600   3rd Qu.:2.000   3rd Qu.:1.0000  
+##  Max.   :1.0000   Max.   :6.200   Max.   :3.000   Max.   :3.0000  
+##                                                   NA's   :4       
+##       thal           num        
+##  Min.   :3.00   Min.   :0.0000  
+##  1st Qu.:3.00   1st Qu.:0.0000  
+##  Median :3.00   Median :0.0000  
+##  Mean   :4.73   Mean   :0.9404  
+##  3rd Qu.:7.00   3rd Qu.:2.0000  
+##  Max.   :7.00   Max.   :4.0000  
+##  NA's   :2
 ```
 
 
 
-```{r}
+
+```r
 # Aplicamos unique para comprobar que hemos capturado todos los posibles valores NA y no tenemos algun otro caracter que pudiera estar interviniendo.
 
 unique(df$ca)
+```
+
+```
+## [1]  3  2  0  1 NA
+```
+
+```r
 unique(df$thal)
+```
+
+```
+## [1]  3  7  6 NA
 ```
 
 Reemplazamos los valores NA por la mediana ya que no es suceptible de casos extremos como la media ya que en el summary anterior notamos que existe algun caso de este tipo.
 
-```{r}
+
+```r
 colSums(is.na(df))
+```
+
+```
+##      age      sex       cp trestbps     chol      fbs  restecg  thalach 
+##        0        0        0        0        0        0        0        0 
+##    exang  oldpeak    slope       ca     thal      num 
+##        0        0        0        4        2        0
+```
+
+```r
 df[,12][is.na(df[,12])] <- median(df$ca, na.rm = T)
 df[,13][is.na(df[,13])] <- median(df$thal, na.rm = T)
 
 colSums(is.na(df))
+```
 
+```
+##      age      sex       cp trestbps     chol      fbs  restecg  thalach 
+##        0        0        0        0        0        0        0        0 
+##    exang  oldpeak    slope       ca     thal      num 
+##        0        0        0        0        0        0
+```
+
+```r
 # Comparamos los NA antes de la sustitiucion y luego de la sustitucion y vemos qe efectivamente ha resuelto nuestro problema con estos valores.
 ```
 
 Otra transfomracion necesaria es que en el dataset la variable predicha presenta 5 niveles siendo 0 ausencia de enfermedad y 1,2,3,4 la presencia de enfermedad (Fuente: https://towardsdatascience.com/heart-disease-prediction-73468d630cfc) por lo que hemos decidido transformar todos los datos que muestran la presencia de enfermedad a 1.
 
-```{r}
+
+```r
 df$num[df$num != 0] <- 1
 unique(df$num)
+```
+
+```
+## [1] 1 0
 ```
 
 
@@ -230,7 +387,8 @@ La edad que a priori pensamos que seria una variable clave no muestra especial i
 
 Son oldpea y ca las vriables que si parecieran mostrar diferencias entre un grupo y otro.
 
-```{r}
+
+```r
 df %>%
   group_by(num) %>%
   summarise(Count = n(),
@@ -240,20 +398,37 @@ df %>%
             oldpeak_mean = round(x = mean(oldpeak), 2),
             ca_mean = round(x = mean(ca), 2),
             ) %>% t()
+```
 
+```
+## `summarise()` ungrouping output (override with `.groups` argument)
+```
 
+```
+##                [,1]   [,2]
+## num            0.00   1.00
+## Count        163.00 139.00
+## age_mean      52.52  56.63
+## chol_mean    242.70 251.47
+## thalach_mean 158.43 139.26
+## oldpeak_mean   0.58   1.57
+## ca_mean        0.27   1.13
 ```
 
 Para comprobar las sospechas que tenemos sobre que no tenemos diferencias en la edad creamos un boxplot donde corroboramos que efectivamente esa diferencia no es asentuada, solo una pequena tendencia a la alza en el grupo que presenta enfermedades cardiacas.
 
-```{r}
+
+```r
 df %>%
   ggplot(aes(as.factor(num), age ,fill = as.factor(num), color = as.factor(num))) + geom_boxplot(alpha = 0.65)
 ```
 
+![](rquintero01_PRA1_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+
 Otra insight interesante que podemos obtener a partir del analisis preliminar de los datos es que en la muestra las mujeres parecen tener una diferencia significativa en cuanto a la presencia de enfermedades cardiacas en comparacion a los hombres.
 
-```{r}
+
+```r
 df  %>%
   ggplot(aes(x = as.factor(num), fill = sex, color = sex)) + geom_bar(show.legend = T) + 
   facet_wrap(~sex) +
@@ -262,6 +437,8 @@ df  %>%
   xlab("")
 ```
 
+![](rquintero01_PRA1_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
+
 En cuanto a las relaciones entre variables son ca y oldpeak las que en mayor medida correlacionan y de forma positiva con num, mientras que talach lo hace en una magnitud importante pero negativa.
 
 De esto derivamos las siguiente conclusiones parciales:
@@ -269,93 +446,185 @@ De esto derivamos las siguiente conclusiones parciales:
 - A mayor ST inducida por ejercicio en comparacion a descanso mayor probabilidad de presencia de enfermedad cardiaca.
 - A mayor ritmo cardiaco alcanzado menor probabilidad de enfermedad cardiaca.
 
-```{r}
+
+```r
 matriz_corr <- df %>%
   select(age, trestbps, chol, thalach, oldpeak, ca, num) %>%
   cor(method = "pearson") %>%
   round(2)
 
 matriz_corr
+```
 
+```
+##            age trestbps chol thalach oldpeak    ca   num
+## age       1.00     0.28 0.21   -0.39    0.20  0.37  0.23
+## trestbps  0.28     1.00 0.13   -0.05    0.19  0.10  0.15
+## chol      0.21     0.13 1.00    0.00    0.05  0.12  0.08
+## thalach  -0.39    -0.05 0.00    1.00   -0.34 -0.27 -0.42
+## oldpeak   0.20     0.19 0.05   -0.34    1.00  0.30  0.43
+## ca        0.37     0.10 0.12   -0.27    0.30  1.00  0.46
+## num       0.23     0.15 0.08   -0.42    0.43  0.46  1.00
+```
+
+```r
 ggcorr(matriz_corr, midpoint = 0, label = T)
 ```
+
+![](rquintero01_PRA1_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
 
 Ahora aplicaremos algunas trasnformaciones a los datos.
 
 Reemplazamos las variables categoricas por su significado.
 
 
-```{r}
 
+```r
 df$cp <- replace(df$cp, df$cp =="1", "typical angina")
 df$cp <- replace(df$cp, df$cp =="2", "atypical angina")
 df$cp <- replace(df$cp, df$cp =="3", "non — anginal pain")
 df$cp <- replace(df$cp, df$cp =="4", "asymptotic")
 df$cp <- as.factor(df$cp)
 unique(df$cp)
+```
 
+```
+## [1] asymptotic         non — anginal pain atypical angina    typical angina    
+## Levels: asymptotic atypical angina non — anginal pain typical angina
+```
+
+```r
 df$fbs <- replace(df$fbs, df$fbs =="1", "true")
 df$fbs <- replace(df$fbs, df$fbs =="0", "false")
 df$fbs <- as.factor(df$fbs)
 unique(df$fbs)
+```
 
+```
+## [1] false true 
+## Levels: false true
+```
+
+```r
 df$restecg <- replace(df$restecg, df$restecg =="0", "normal")
 df$restecg <- replace(df$restecg, df$restecg =="1", " having ST-T wave abnormality")
 df$restecg <- replace(df$restecg, df$restecg =="2", "eft ventricular hyperthrophy")
 df$restecg <- as.factor(df$restecg)
 unique(df$restecg)
+```
 
+```
+## [1] eft ventricular hyperthrophy  normal                       
+## [3]  having ST-T wave abnormality
+## 3 Levels:  having ST-T wave abnormality ... normal
+```
+
+```r
 df$exang <- replace(df$exang, df$exang =="1", "Yes")
 df$exang <- replace(df$exang, df$exang =="0", "No")
 df$exang <- as.factor(df$exang)
 unique(df$exang)
+```
 
+```
+## [1] Yes No 
+## Levels: No Yes
+```
+
+```r
 df$slope <- replace(df$slope, df$slope =="1", "upsloping")
 df$slope <- replace(df$slope, df$slope =="2", "flat")
 df$slope <- replace(df$slope, df$slope =="3", "downsloping")
 df$slope <- as.factor(df$slope)
 unique(df$slope)
+```
 
+```
+## [1] flat        downsloping upsloping  
+## Levels: downsloping flat upsloping
+```
+
+```r
 df$thal <- replace(df$thal, df$thal =="3", "normal")
 df$thal <- replace(df$thal, df$thal =="6", "fixed defect")
 df$thal <- replace(df$thal, df$thal =="7", "reversible defect")
 df$thal <- as.factor(df$thal)
 unique(df$thal)
+```
 
+```
+## [1] normal            reversible defect fixed defect     
+## Levels: fixed defect normal reversible defect
+```
+
+```r
 df$num <- replace(df$num, df$num =="0", "Ausencia")
 df$num <- replace(df$num, df$num =="1", "Presencia")
 df$num <- as.factor(df$num)
 unique(df$num)
+```
 
+```
+## [1] Presencia Ausencia 
+## Levels: Ausencia Presencia
+```
+
+```r
 df$sex <- replace(df$sex, df$sex =="0", "Male")
 df$sex <- replace(df$sex, df$sex =="1", "Female")
 df$sex <- as.factor(df$sex)
 unique(df$sex)
+```
 
+```
+## [1] Female Male  
+## Levels: Female Male
+```
+
+```r
 # Fuente de las categorias https://towardsdatascience.com/heart-disease-prediction-73468d630cfc
-
 ```
 
 Ahora nuetro dataset es mas comprensible y las columnas tienen el tipo correcto, factor o double, segun corresponde.
 
-```{r}
+
+```r
 glimpse(df)
+```
+
+```
+## Rows: 302
+## Columns: 14
+## $ age      <dbl> 67, 67, 37, 41, 56, 62, 57, 63, 53, 57, 56, 56, 44, 52, 57, …
+## $ sex      <fct> Female, Female, Female, Male, Female, Male, Male, Female, Fe…
+## $ cp       <fct> asymptotic, asymptotic, non — anginal pain, atypical angina,…
+## $ trestbps <dbl> 160, 120, 130, 130, 120, 140, 120, 130, 140, 140, 140, 130, …
+## $ chol     <dbl> 286, 229, 250, 204, 236, 268, 354, 254, 203, 192, 294, 256, …
+## $ fbs      <fct> false, false, false, false, false, false, false, false, true…
+## $ restecg  <fct> eft ventricular hyperthrophy, eft ventricular hyperthrophy, …
+## $ thalach  <dbl> 108, 129, 187, 172, 178, 160, 163, 147, 155, 148, 153, 142, …
+## $ exang    <fct> Yes, Yes, No, No, No, No, Yes, No, Yes, No, No, Yes, No, No,…
+## $ oldpeak  <dbl> 1.5, 2.6, 3.5, 1.4, 0.8, 3.6, 0.6, 1.4, 3.1, 0.4, 1.3, 0.6, …
+## $ slope    <fct> flat, flat, downsloping, upsloping, upsloping, downsloping, …
+## $ ca       <dbl> 3, 2, 0, 0, 0, 2, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ thal     <fct> normal, reversible defect, normal, normal, normal, normal, n…
+## $ num      <fct> Presencia, Presencia, Ausencia, Ausencia, Ausencia, Presenci…
 ```
 
 Para poder realizar el PCA geenramos un nuevo dataset que contenga solo las variables no categoricas con las que trabajaremos y procedemos a normalizarlas para evitar sesgos por la medida de las variables.
 
-```{r}
+
+```r
 df_num <- df %>%
   dplyr::select(where(is.numeric) & -num)
 
 df_num <-  scale(df_num)
-
 ```
 
 PCA
 
-```{r}
 
+```r
 # Corremos el PCA con el nuevo dataset
 pca <- prcomp(df_num, scale=FALSE)
 
@@ -372,7 +641,11 @@ pca.var.per <- round(pca.var/sum(pca.var)*100, 1)
 
 # Graficamos el porcentaje de varianza explicada por cada factor
 barplot(pca.var.per, main="Scree Plot", xlab="Componente principal", ylab="Porcentaje de variacion")
+```
 
+![](rquintero01_PRA1_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
+
+```r
 # Graficamos como se distribuyen la muestra en los dos primeros factores
 ggplot(data=pca.data2, aes(x=PC1, y=PC2, fill=as.factor(num), color=as.factor(num))) +
   geom_point() +
@@ -380,7 +653,11 @@ ggplot(data=pca.data2, aes(x=PC1, y=PC2, fill=as.factor(num), color=as.factor(nu
   ylab(paste("PC2 - ", pca.var.per[2], "%", sep="")) +
   theme_bw() +
   ggtitle("Grafico PCA")
- 
+```
+
+![](rquintero01_PRA1_files/figure-html/unnamed-chunk-14-2.png)<!-- -->
+
+```r
 # Ordenamos las variables que mas aportan al primer factor de mayor a menor
 loading_scores <- pca$rotation[,1]
 var_scores <- abs(loading_scores) ## get the magnitudes
@@ -388,9 +665,23 @@ var_score_ranked <- sort(var_scores, decreasing=TRUE)
 top_var <- names(var_score_ranked[1:6])
 # Nombres
 top_var
+```
+
+```
+## [1] "age"      "ca"       "thalach"  "oldpeak"  "trestbps" "chol"
+```
+
+```r
 # Porcentajes que explican
 pca$rotation[top_var,1]
- 
+```
+
+```
+##        age         ca    thalach    oldpeak   trestbps       chol 
+## -0.5188278 -0.4593478  0.4514243 -0.4294167 -0.2964383 -0.2091864
+```
+
+```r
 # Ordenamos las variables que mas aportan al segundo factor de mayor a menor
 loading_scores <- pca$rotation[,2]
 var_scores <- abs(loading_scores)
@@ -398,17 +689,42 @@ var_score_ranked <- sort(var_scores, decreasing=TRUE)
 top_var <- names(var_score_ranked[1:6])
 # Nombres
 top_var
+```
+
+```
+## [1] "chol"     "trestbps" "thalach"  "oldpeak"  "age"      "ca"
+```
+
+```r
 # Porcentajes
 pca$rotation[top_var,2] 
 ```
 
+```
+##       chol   trestbps    thalach    oldpeak        age         ca 
+##  0.6794728  0.4910164  0.4287746 -0.2793122  0.1500602 -0.1133071
+```
+
 Del PCA obtemos un primer factor que explica el 34,7% de la varianza de los datos y un segundo factor solo explica el 18.03%.
 
-```{r}
+
+```r
 pca.data2 %>%
   group_by(as.factor(num)) %>%
   summarise(PC1_mean = mean(PC1), 
             PC2_mean = mean(PC2))
+```
+
+```
+## `summarise()` ungrouping output (override with `.groups` argument)
+```
+
+```
+## # A tibble: 2 x 3
+##   `as.factor(num)` PC1_mean PC2_mean
+##   <fct>               <dbl>    <dbl>
+## 1 Ausencia            0.705    0.170
+## 2 Presencia          -0.826   -0.199
 ```
 
 El primer factor agrupa las variables que se asocian a ausencia de enfermedad cardiaca, primcipalmente en este factor se encuentran la edad (menos edad) y los vasso afectados (menso vasos).
